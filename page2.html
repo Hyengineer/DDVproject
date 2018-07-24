@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<Title>Page2 </Title> 
+<header>
+	<h1>Navigation </h1>
+	<nav>
+	<ul>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="page1.html">Page1</a></li>
+		<li><a href="page2.html">Page2</a></li>
+        <li><a href="page3.html">Page3</a></li>
+	</ul>
+	</nav>
+	<h2>1. Description </h2>
+	<p><strong>1.1.</strong> Good Start</p>
+	<h2>2. Chart </h2>
+    <hr></hr>
+	<h2>Unemployment rates by State in April 2018 </h2>
+
+</header>
+
+<style>
+    body {
+	font: 11px sans-serif;
+}
+        
+	.state{
+		fill: none;
+		stroke: #a9a9a9;
+		stroke-width: 1;
+	}
+	.state:hover{
+		fill-opacity:0.2;
+	}
+	#tooltip {   
+		position: absolute;           
+		text-align: center;
+		padding: 20px;             
+		margin: 10px;
+		font: 12px sans-serif;        
+		background: lightsteelblue;   
+		border: 1px;      
+		border-radius: 2px;           
+		pointer-events: none;         
+	}
+	#tooltip h4{
+		margin:0;
+		font-size:14px;
+	}
+	#tooltip{
+		background:rgba(0,0,0,0.9);
+		border:1px solid grey;
+		border-radius:5px;
+		font-size:12px;
+		width:auto;
+		padding:4px;
+		color:white;
+		opacity:0;
+	}
+	#tooltip table{
+		table-layout:fixed;
+	}
+	#tooltip tr td{
+		padding:0;
+		margin:0;
+	}
+	#tooltip tr td:nth-child(1){
+		width:50px;
+	}
+	#tooltip tr td:nth-child(2){
+		text-align:center;
+	}
+</style>
+<body>
+<div id="tooltip"></div><!-- div to hold tooltip. -->
+<svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
+<script src="data_page2/uStates.js"></script> <!-- creates uStates. -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v2.min.js"></script>
+    
+<script>
+/*  color scheme */
+    var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+    
+    var x = d3.scaleLinear()
+    .domain([1, 8])
+    .rangeRound([600, 860]);
+
+var color = d3.scaleThreshold()
+    .domain(d3.range(1, 8))
+    .range(d3.schemeBlues[7]);/*schemeBlues*/
+
+var g = svg.append("g")
+    .attr("class", "key")
+    .attr("transform", "translate(0,40)");
+
+g.selectAll("rect")
+  .data(color.range().map(function(d) {
+      d = color.invertExtent(d);
+      if (d[0] == null) d[0] = x.domain()[0];
+      if (d[1] == null) d[1] = x.domain()[1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function(d) { return x(d[0]); })
+    .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+    .attr("fill", function(d) { return color(d[0]); });
+
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", x.range()[0])
+    .attr("y", -6)
+    .attr("fill", "#000")
+    .attr("text-anchor", "start")
+    .attr("font-weight", "bold")
+    .text("Unemployment rate");
+
+g.call(d3.axisBottom(x)
+    .tickSize(13)
+    .tickFormat(function(x, i) { return i ? x : x + "%"; })
+    .tickValues(color.domain()))
+  .select(".domain")
+    .remove();
+
+    
+    
+    
+    
+
+	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+		return "<h4>"+n+"</h4><table>"+
+			"<tr><td>Rate</td><td>"+(d.unemployment)+"%</td></tr>"
+			"</table>";
+	}
+	
+	var sampleData ={};	
+	var Data = {"HI":2, "AK":7.3, "FL":3.9, "SC":4.2, "GA":4.3, "AL":3.8, "NC":4.4, "TN":3.4, "RI":4.5, "CT":4.5, "MA":3.5,
+	"ME":2.7, "NH":2.6, "VT":2.8, "NY":4.6, "NJ":4.5, "PA":4.7, "DE":4.2, "MD":4.3, "WV":5.4, "KY":4, "OH":4.3, 
+	"MI":4.7, "WY":3.8, "MT":4, "ID":3.2, "WA":4.8, "DC":5.6, "TX":4.1, "CA":4.2, "AZ":4.9, "NV":4.9, "UT":3.1, 
+	"CO":2.9, "NM":5.4, "OR":4.1, "ND":2.6, "SD":3.4, "NE":2.8, "IA":2.8, "MS":4.6, "IN":3.2, "IL":4.4, "MN":3.2, 
+	"WI":2.8, "MO":3.6, "AR":3.8, "OK":4, "KS":3.4, "LS":4.5, "VA":3.3};
+    ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
+	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
+	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
+	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+		.forEach(function(d){ 
+			sampleData[d]={unemployment:Data[d], color:color(Data[d])}; 
+		});
+	
+	/* draw states on id #statesvg */	
+	uStates.draw("#statesvg", sampleData, tooltipHtml);
+	
+	d3.select(self.frameElement).style("height", "600px"); 
+    
+
+</script>
+
+</body>
