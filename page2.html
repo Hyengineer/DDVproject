@@ -2,24 +2,54 @@
 <meta charset="utf-8">
 <Title>Page2 </Title> 
 <header>
-	<h1>Navigation </h1>
+    <div id="header">
+	<h1>US unemployment rate</h1>
+    <h2>Slide 2</h2>
+    </div>
+    <div id="nav">
 	<nav>
 	<ul>
 		<li><a href="index.html">Home</a></li>
-		<li><a href="page1.html">Page1</a></li>
-		<li><a href="page2.html">Page2</a></li>
-        <li><a href="page3.html">Page3</a></li>
+		<li><a href="page1.html">2008</a></li>
+		<li><a href="page2.html">2010</a></li>
+        <li><a href="page3.html">2012</a></li>
+        <li><a href="page4.html">2014</a></li>
+        <li><a href="page5.html">2016</a></li>
+        <li><a href="page6.html">2018</a></li>
+        <li><a href="About.html">About the Visualization</a></li>
 	</ul>
 	</nav>
-	<h2>1. Description </h2>
-	<p><strong>1.1.</strong> Good Start</p>
-	<h2>2. Chart </h2>
+    </div>
+
+	<h2>1. Chart </h2>
+        <p><a href="page1.html"><-Previous Slide</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="page3.html">Next Slide -></a></p>
     <hr></hr>
-	<h2>Unemployment rates by State in April 2018 </h2>
+	<h2>Unemployment rates by State in April 2010 </h2>
 
 </header>
+<!-- Example based on http://bl.ocks.org/NPashaP/a74faf20b492ad377312 -->
+<!-- Example based on https://bl.ocks.org/mbostock/4060606-->
 
 <style>
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:120px;
+    float:left;
+    padding:5px; 
+}
+#section {
+    width:500px;
+    height:250px;
+    padding:10px; 
+}
     body {
 	font: 11px sans-serif;
 }
@@ -74,7 +104,7 @@
 <body>
 <div id="tooltip"></div><!-- div to hold tooltip. -->
 <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
-<script src="data_page2/uStates.js"></script> <!-- creates uStates. -->
+<script src="data_page/uStates.js"></script> <!-- creates uStates. -->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -87,11 +117,11 @@
     
     var x = d3.scaleLinear()
     .domain([1, 8])
-    .rangeRound([600, 860]);
+    .rangeRound([550, 810]);
 
 var color = d3.scaleThreshold()
-    .domain(d3.range(1, 8))
-    .range(d3.schemeBlues[7]);/*schemeBlues*/
+    .domain(d3.range(1, 10))
+    .range(d3.schemeBlues[9]);/*schemeBlues*/
 
 var g = svg.append("g")
     .attr("class", "key")
@@ -138,11 +168,7 @@ g.call(d3.axisBottom(x)
 	}
 	
 	var sampleData ={};	
-	var Data = {"HI":2, "AK":7.3, "FL":3.9, "SC":4.2, "GA":4.3, "AL":3.8, "NC":4.4, "TN":3.4, "RI":4.5, "CT":4.5, "MA":3.5,
-	"ME":2.7, "NH":2.6, "VT":2.8, "NY":4.6, "NJ":4.5, "PA":4.7, "DE":4.2, "MD":4.3, "WV":5.4, "KY":4, "OH":4.3, 
-	"MI":4.7, "WY":3.8, "MT":4, "ID":3.2, "WA":4.8, "DC":5.6, "TX":4.1, "CA":4.2, "AZ":4.9, "NV":4.9, "UT":3.1, 
-	"CO":2.9, "NM":5.4, "OR":4.1, "ND":2.6, "SD":3.4, "NE":2.8, "IA":2.8, "MS":4.6, "IN":3.2, "IL":4.4, "MN":3.2, 
-	"WI":2.8, "MO":3.6, "AR":3.8, "OK":4, "KS":3.4, "LS":4.5, "VA":3.3};
+	var Data = {"AL":10.1,"AK":7.8,"AZ":10.3,"AR":8.1,"CA":12.2,"CO":8.7,"CT":9.1,"DE":8.4,"DC":9.3,"FL":10.9,"GA":10.3,"HI":6.9,"ID":9.0,"IL":10.3,"IN":10.4,"IA":5.9,"KS":7.0,"KY":10.0,"LS":7.9,"ME":8.1,"MD":7.6,"MA":8.3,"MI":12.6,"MN":7.3,"MS":10.2,"MO":9.5,"MT":7.3,"NE":4.6,"NV":13.5,"NH":5.8,"NJ":9.4,"NM":8.3,"NY":8.5,"NC":10.7,"ND":3.8,"OH":10.1,"OK":6.8,"OR":10.7,"PA":8.5,"RI":11.3,"SC":11.0,"SD":4.9,"TN":9.3,"TX":8.0,"UT":7.9,"VT":6.1,"VA":7.1,"WA":9.9,"WV":8.5,"WI":8.6,"WY":6.3};
     ["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
 	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
 	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
@@ -161,3 +187,9 @@ g.call(d3.axisBottom(x)
 </script>
 
 </body>
+
+    <div id="section">
+	<h2>2. Description </h2>
+	<p>It shows the recent unemployment rates by States in April 2010. A separate blue palette is used to distinguish states of different unemployment rates. The deeper the color, the higher the unemployment rate. You can see the detailed value when you put the mouse over the map. North Dakota,Nebraska and South Dakota have the lowest unemployment rates.</p>
+	
+    </div>
